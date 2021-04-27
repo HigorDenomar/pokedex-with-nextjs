@@ -31,7 +31,7 @@ export default function Home({ pokemons }) {
 export async function getStaticProps() {
   const maxPokemons = 150;
 
-  const pokemonPromises = Array(maxPokemons).fill().map(async (_, index) => {
+  const pokemonPromises = Array(maxPokemons).fill(0).map(async (_, index) => {
     const { data } = await axios.get(`https://pokeapi.co/api/v2/pokemon/${index + 1}`);
     return data;
   });
