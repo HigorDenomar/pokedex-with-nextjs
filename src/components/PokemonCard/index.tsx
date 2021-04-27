@@ -1,42 +1,49 @@
 import Image from 'next/image';
+import { usePokemon } from '../../contexts/PokemonContext';
 
 import styles from './styles.module.scss';
 
 export default function PokemonCard() {
 
+  const { selectedPokemon: { pokemon, sprite } } = usePokemon();
+
   return (
     <aside className={styles.container}>
       <div>
-        <Image
-          src="https://pokeres.bastionbot.org/images/pokemon/150.png"
-          alt="Mewtwo"
-          width={300}
-          height={300}
-          objectFit="contain"
-        />
+        { pokemon?.name ? (
+          <>
+            <Image
+              src={ sprite }
+              alt={ pokemon.name }
+              width={300}
+              height={300}
+              objectFit="contain"
+            />
 
-        <h2>Mewtwo</h2>
+            <h2>{ pokemon.name }</h2>
 
-        <div className={`${styles.types} ${styles.info}`}>
-          <span>Types:</span>
+            <div className={`${styles.types} ${styles.info}`}>
+              <span>Types:</span>
 
-          <p>Psychic</p>
-        </div>
+              <p>{ pokemon.types.map(type => type.type.name).join(', ') }</p>
+            </div>
 
-        <div className={`${styles.info}`}>
-          <span>Abilities:</span>
+            <div className={`${styles.info}`}>
+              <span>Abilities:</span>
 
-          <p>Pressure, Unnerve</p>
-        </div>
+              <p>{ pokemon.abilities.map(ability => ability.ability.name).join(', ') }</p>
+            </div>
 
-        <div className={`${styles.status} ${styles.info}`}>
-          <p><span>Hp:</span> 106</p>
-          <p><span>Attack:</span> 110</p>
-          <p><span>Defense:</span> 90</p>
-          <p><span>Special-Attack:</span> 154</p>
-          <p><span>Special-Defense:</span> 90</p>
-          <p><span>Speed:</span> 130</p>
-        </div>
+            <div className={`${styles.status} ${styles.info}`}>
+              { pokemon.stats.map(status => (
+                <p><span>{ status.stat.name }:</span> { status.base_stat }</p>
+              )) }
+            </div>
+          </>
+        ) : (
+          <p>Selecione um pokémon</p>
+        ) }
+        
       </div>
     </aside>
   );

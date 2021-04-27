@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext, useState, } from "react";
 
-type PokemonData = {
+interface PokemonData {
   id: number;
   name: string;
   types: Array<{
@@ -28,7 +28,7 @@ type SelectedPokemon = {
 
 type PokemonContextData = {
   selectedPokemon: SelectedPokemon;
-  setPokemon: ({ pokemon: PokemonData, sprite: string }) => void;
+  setPokemon: ({ pokemon, sprite}: SelectedPokemon) => void;
 }
 
 type PokemonContextProviderProps = {

@@ -2,8 +2,40 @@ import Image from 'next/image';
 import axios from "axios";
 
 import styles from './home.module.scss';
+import { usePokemon } from '../contexts/PokemonContext';
 
-export default function Home({ pokemons }) {
+interface PokemonData {
+  id: number;
+  name: string;
+  types: Array<{
+    type: {
+      name: string;
+    }
+  }>
+  stats: Array<{
+    base_stat: number;
+    stat: {
+      name: string;
+    }
+  }>;
+  abilities: {
+    ability: {
+      name: string;
+    }
+  }[];
+}
+
+type SelectedPokemon = {
+  pokemon: PokemonData;
+  sprite: string;
+}
+
+interface HomeProps {
+  pokemons: Array<PokemonData>
+}
+
+export default function Home({ pokemons }: HomeProps) {
+  const { setPokemon } = usePokemon();
 
   return (
     <div className={styles.container}>
@@ -11,7 +43,7 @@ export default function Home({ pokemons }) {
         { pokemons?.map( pokemon => (
           <li
             key={pokemon.id}
-            onClick={() => {}}
+            onClick={() => setPokemon({ pokemon, sprite: `https://pokeres.bastionbot.org/images/pokemon/${ pokemon.id }.png` })}
           >
             <Image
               src={ `https://pokeres.bastionbot.org/images/pokemon/${ pokemon.id }.png` }
